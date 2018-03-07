@@ -1,0 +1,55 @@
+<svg id="svg"  width="400" height="400" xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+	<script>
+	<![CDATA[
+		var svg = null;
+		var g = null;
+		var setup = function() {
+			svg=document.getElementById('svg');
+			g=document.getElementById('g');
+			svg.addEventListener('click', create);
+		}
+		var create = function(e) {
+			g.innerHTML +=  '<circle cx="' + e.offsetX + '" cy="' + e.offsetY + '" r="10" fill="blue" class="circles"></circle>';
+			fix();
+		}
+		var color = function(e) {
+			this.setAttribute("fill", "green");
+			e.stopPropagation();
+			//this.removeEventListener('click', color);
+			this.addEventListener('click', nope);
+		}
+		var nope = function(e) {
+			this.remove();
+			e.stopPropagation();
+			g.innerHTML +=  '<circle cx="' + parseInt(Math.random() * 400) + '" cy="' + parseInt(Math.random() * 400) + '" r="10" fill="blue" class="circles"></circle>';
+			fix();
+		}
+
+		//Because += messes stuff up
+		var fix = function() {
+			var circ = document.getElementsByClassName('circles');
+			for (var i = 0; i < circ.length; i++) {
+				if (circ[i].getAttribute("fill") == "blue") {
+					circ[i].addEventListener('click', color);
+				}
+				else {
+					circ[i].addEventListener('click', nope);
+				}
+
+			}
+		}
+	]]>
+	</script>
+	<g id="g">
+	</g>
+</svg>
+<br>
+<input type="submit" value="clear" id="clear" onclick="cl()">
+<script type="text/javascript">
+	setup();
+	var cl = function() {
+		console.log('idk');
+		document.getElementById('g').innerHTML="";
+	}
+</script>
